@@ -1,3 +1,5 @@
+> **📌 本项目由 DeepSeek 辅助开发**
+
 # WebM2GIF
 
 **把 `.webm` 批量转成 `.gif` 的轻量 macOS 工具。** 原生 AppKit 界面，单窗口、无广告、无多余弹窗；
