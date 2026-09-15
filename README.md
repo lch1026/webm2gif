@@ -47,7 +47,7 @@ VideoToolbox（媒体引擎）解码、GPU 缩放，并默认并行处理多个�
 ## 快速开始
 
 ```bash
-git clone https://github.com/<owner>/webm2gif.git
+git clone https://github.com/lch1026/webm2gif.git
 cd webm2gif
 
 # 1) 创建本地虚拟环境并安装依赖（首次需要网络）
