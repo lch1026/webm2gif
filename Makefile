@@ -2,13 +2,14 @@
 PYTHON := .venv/bin/python
 APP    := WebM2GIF.app
 
-.PHONY: help setup run cli test preview icon app standalone check bench ffmpeg clean
+.PHONY: help setup run cli test lint preview icon app standalone check bench ffmpeg clean
 
 help:
 	@echo "make setup       创建本地虚拟环境并安装依赖"
 	@echo "make run         启动图形界面"
 	@echo "make cli FILE=x  命令行转换（示例：make cli FILE=clip.webm）"
 	@echo "make test        运行测试"
+	@echo "make lint        代码风格检查（flake8，与 CI 一致）"
 	@echo "make preview     生成界面预览 PNG（docs/preview.png）"
 	@echo "make icon        从 packaging/AppIcon.png 生成图标 build/AppIcon.icns"
 	@echo "make app         构建 $(APP)（轻量版，复用 .venv）"
@@ -29,6 +30,9 @@ cli:
 
 test:
 	$(PYTHON) -m pytest -q
+
+lint:
+	$(PYTHON) -m flake8
 
 preview:
 	$(PYTHON) tools/preview_ui.py --demo docs/preview.png

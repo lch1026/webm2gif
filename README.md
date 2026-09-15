@@ -268,6 +268,8 @@ webm2gif/
 
 ## 应用图标
 
+<img src="docs/icon.png" width="140" alt="WebM2GIF 图标">
+
 图标来自 `packaging/AppIcon.png`（建议 512×512 以上、正方形、带透明通道）：`make icon` 会把
 它转成 `build/AppIcon.icns`（16/32/64/128/256/512/1024 全尺寸），`make app` 再把它装进
 `WebM2GIF.app`；素材或生成脚本比 icns 新时，打包会自动重新生成。
@@ -297,6 +299,7 @@ cp ~/Pictures/新图标.png packaging/AppIcon.png && make app
 
 ```bash
 make test        # 运行全部测试（pytest）
+make lint        # 代码风格检查（flake8，与 CI 一致）
 make preview     # 重新生成 docs/preview.png 界面截图
 make app         # 重新构建 WebM2GIF.app
 make icon        # 从 packaging/AppIcon.png 重新生成图标
@@ -354,6 +357,8 @@ GIF 的调色板和编码只能在 CPU 上跑，硬件加速只接管解码（�
   取消、失败处理、硬件回退等流程；用 `FAKE_FFMPEG_HW=0`、`FAKE_FFMPEG_HW_FAIL=1` 等环境变量
   可以模拟「没有硬件」「硬件初始化失败」等情况。
 - 提交前请跑一遍 `make test`；改动界面后再跑一次 `make preview`，让 `docs/preview.png` 保持最新。
+- 推送后 GitHub Actions 会自动跑一遍 `flake8` + `pytest`（Python 3.11 / 3.13，见
+  `.github/workflows/ci.yml`）；本地用 `make lint` 可以提前发现同样的问题。
 
 ## 许可
 
