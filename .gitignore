@@ -1,0 +1,19 @@
+# 本地虚拟环境（scripts/setup.sh 创建）
+.venv/
+
+# Python 缓存与打包元数据
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# 构建产物（用 make app / make icon 重新生成）
+build/
+dist/
+WebM2GIF.app/
+
+# 临时输出
+out/
+
+# macOS
+.DS_Store

@@ -1,0 +1,94 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "运行 WebM2GIF（图形界面）",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "webm2gif",
+      "console": "internalConsole",
+      "justMyCode": false
+    },
+    {
+      "name": "命令行：转换选定的 .webm",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "webm2gif",
+      "args": [
+        "--cli",
+        "${input:webmPath}",
+        "-o",
+        "${workspaceFolder}/out"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "检查 ffmpeg 环境",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "webm2gif",
+      "args": [
+        "--check"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "渲染界面预览（生成 PNG）",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/tools/preview_ui.py",
+      "args": [
+        "--demo",
+        "${workspaceFolder}/out/preview.png"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "基准测试：CPU vs VideoToolbox",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/tools/benchmark.py",
+      "args": [
+        "--duration",
+        "3"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "命令行：硬件解码 + 4 路并行",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "webm2gif",
+      "args": [
+        "--cli",
+        "${input:webmPath}",
+        "-o",
+        "${workspaceFolder}/out",
+        "--hw",
+        "videotoolbox",
+        "-j",
+        "4"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "调试当前测试文件",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "${file}",
+        "-q"
+      ],
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "webmPath",
+      "type": "promptString",
+      "description": "要转换的 .webm 文件路径",
+      "default": "${workspaceFolder}/sample.webm"
+    }
+  ]
+}

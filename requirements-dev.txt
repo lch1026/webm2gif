@@ -1,0 +1,4 @@
+-r requirements.txt
+pytest>=8.0
+# Optional: builds a fully self-contained .app (tools/build_app.py --standalone)
+pyinstaller>=6.6

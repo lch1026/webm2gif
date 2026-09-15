@@ -1,0 +1,51 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "setup: 创建虚拟环境并安装依赖",
+      "type": "shell",
+      "command": "bash scripts/setup.sh",
+      "problemMatcher": []
+    },
+    {
+      "label": "run: 启动应用",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python -m webm2gif",
+      "problemMatcher": []
+    },
+    {
+      "label": "test: 运行全部测试",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python -m pytest -q",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "preview: 生成界面截图",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python tools/preview_ui.py --demo out/preview.png",
+      "problemMatcher": []
+    },
+    {
+      "label": "build: 构建 WebM2GIF.app",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python tools/build_app.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "bench: 对比 CPU / GPU 加速耗时",
+      "type": "shell",
+      "command": "${workspaceFolder}/.venv/bin/python tools/benchmark.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "ffmpeg: （可选）安装 Homebrew 的 ffmpeg",
+      "type": "shell",
+      "command": "bash scripts/install_ffmpeg.sh",
+      "problemMatcher": []
+    }
+  ]
+}

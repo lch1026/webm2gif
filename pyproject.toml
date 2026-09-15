@@ -1,0 +1,49 @@
+# 项目元数据与工具配置。
+# 运行时依赖同时保留在 requirements.txt / requirements-dev.txt（scripts/setup.sh 与 CI 使用），
+# 这里声明同一份依赖，方便 `pip install -e .` 与将来发布到 PyPI。
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "webm2gif"
+description = "轻量的 macOS WebM → GIF 转换器：原生 AppKit 界面 + 命令行，支持 VideoToolbox 与并行转换"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "lch1026" }]
+keywords = ["webm", "gif", "ffmpeg", "macos", "appkit", "videotoolbox", "converter"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: MacOS X",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Multimedia :: Graphics :: Graphics Conversion",
+]
+dependencies = [
+  "pyobjc-framework-Cocoa>=10.1; sys_platform == 'darwin'",
+  "imageio-ffmpeg>=0.5.1",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "flake8>=7.0", "pyinstaller>=6.6"]
+
+[project.scripts]
+webm2gif = "webm2gif.cli:main"
+
+[tool.setuptools]
+packages = ["webm2gif", "webm2gif.ui"]
+
+[tool.setuptools.dynamic]
+version = { attr = "webm2gif.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,4 @@
+# Runtime dependencies (installed into .venv by scripts/setup.sh)
+pyobjc-framework-Cocoa>=10.1; sys_platform == "darwin"
+# Ships a self-contained ffmpeg binary, so Homebrew is optional.
+imageio-ffmpeg>=0.5.1
