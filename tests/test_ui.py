@@ -210,9 +210,12 @@ def test_window_drives_a_full_conversion(controller, fake_ffmpeg, sample_webm, t
     assert controller.worker is not None
     assert not controller.start_button.isEnabled()
 
-    deadline = time.time() + 15
+    # 轮询而不是死等：CI 的 macOS 运行器要跑完整套用例（大量子进程）时会明显变慢，
+    # 所以期限给得宽松些，并在两次泵 run loop 之间让出 CPU，避免和工作线程抢 GIL。
+    deadline = time.time() + 60
     while controller.worker is not None and time.time() < deadline:
-        NSRunLoop.currentRunLoop().runUntilDate_(NSDate.dateWithTimeIntervalSinceNow_(0.05))
+        NSRunLoop.currentRunLoop().runUntilDate_(NSDate.dateWithTimeIntervalSinceNow_(0.02))
+        time.sleep(0.01)
 
     assert controller.worker is None, "转换没有在预期时间内结束"
     assert controller.items[0].status == "done"
