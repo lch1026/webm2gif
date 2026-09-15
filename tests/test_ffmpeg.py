@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import shutil
+import sys
 
 from webm2gif.ffmpeg import FFmpegBinary, MediaInfo, find_ffmpeg, iter_candidates, probe_media
 
@@ -49,6 +50,34 @@ def test_bundled_copy_is_preferred_over_path(monkeypatch, tmp_path, fake_ffmpeg)
     assert found is not None
     assert found.source == "内置"
     assert found.path == str(bundle_root / "bin" / "ffmpeg")
+
+
+def test_bundled_copy_is_found_in_a_frozen_app_layout(monkeypatch, tmp_path, fake_ffmpeg):
+    """回归测试：.app 里的 _MEIPASS 与 ffmpeg 所在的 Resources 不是同一个目录。
+
+    PyInstaller 让 sys._MEIPASS 指向 Contents/Frameworks，而 build_app.py 把
+    ffmpeg 放在 Contents/Resources/bin/ffmpeg；两者对不上时，独立版会跳过自带
+    的 ffmpeg 去用系统 PATH 里的版本，没装 ffmpeg 的机器就直接失败。
+    """
+    monkeypatch.delenv("WEBM2GIF_FFMPEG", raising=False)
+    contents = tmp_path / "WebM2GIF.app" / "Contents"
+    bundled = contents / "Resources" / "bin" / "ffmpeg"
+    bundled.parent.mkdir(parents=True)
+    shutil.copy2(fake_ffmpeg, bundled)
+    (contents / "Frameworks").mkdir()
+    executable = contents / "MacOS" / "WebM2GIF"
+    executable.parent.mkdir()
+    executable.write_bytes(b"")
+
+    monkeypatch.setattr("webm2gif.ffmpeg.resource_root", lambda: contents / "Frameworks")
+    monkeypatch.setattr("webm2gif.ffmpeg._imageio_ffmpeg_path", lambda: None)
+    monkeypatch.setattr(sys, "executable", str(executable))
+    monkeypatch.setattr(sys, "frozen", True, raising=False)
+
+    found = find_ffmpeg()
+    assert found is not None
+    assert found.source == "内置"
+    assert found.path == str(bundled)
 
 
 def test_environment_override(monkeypatch, fake_ffmpeg):

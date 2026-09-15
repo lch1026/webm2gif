@@ -93,6 +93,12 @@ def bundled_candidates() -> list[Path]:
         root / "bin" / "ffmpeg",
         root / "Resources" / "bin" / "ffmpeg",
     ]
+    if getattr(sys, "frozen", False):
+        # .app 里 sys._MEIPASS 指向 Contents/Frameworks，而打包脚本把 ffmpeg 放在
+        # Contents/Resources/bin，两个目录并不重合，所以再按可执行文件的位置找一遍。
+        contents = Path(sys.executable).resolve().parent.parent
+        candidates.append(contents / "Resources" / "bin" / "ffmpeg")
+        candidates.append(contents / "Frameworks" / "bin" / "ffmpeg")
     vendor = root / "vendor"
     if vendor.is_dir():
         candidates.extend(sorted(p for p in vendor.glob("ffmpeg*") if p.is_file()))
