@@ -47,3 +47,5 @@ version = { attr = "webm2gif.__version__" }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# 让 tests/ 之外的入口脚本也能直接 import webm2gif
+pythonpath = ["."]
