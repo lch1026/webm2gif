@@ -39,6 +39,10 @@ dev = ["pytest>=8.0", "flake8>=7.0", "pyinstaller>=6.6"]
 [project.scripts]
 webm2gif = "webm2gif.cli:main"
 
+[project.urls]
+Repository = "https://github.com/lch1026/webm2gif_mac_only"
+Releases = "https://github.com/lch1026/webm2gif_mac_only/releases"
+
 [tool.setuptools]
 packages = ["webm2gif", "webm2gif.ui"]
 
